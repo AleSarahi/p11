@@ -9,11 +9,6 @@ variable "worker_name" {
   type        = string
 }
 
-variable "script_content" {
-  description = "Código JavaScript (ES module) del Worker"
-  type        = string
-}
-
 variable "d1_database_id" {
   description = "ID de la base D1 que se enlaza como binding DB"
   type        = string

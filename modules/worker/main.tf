@@ -1,8 +1,17 @@
+terraform {
+  required_providers {
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 5.0"
+    }
+  }
+}
+
 resource "cloudflare_workers_script" "this" {
   account_id         = var.account_id
   script_name        = var.worker_name
   main_module        = "worker.js"
-  content            = var.script_content
+  content            = file("${path.module}/worker.js")
   compatibility_date = var.compatibility_date
 
   bindings = [{
@@ -21,4 +30,9 @@ resource "cloudflare_workers_script_subdomain" "this" {
 data "cloudflare_worker" "this" {
   account_id = var.account_id
   worker_id  = cloudflare_workers_script.this.id
+}
+
+output "url" {
+  description = "URL del Worker en workers.dev"
+  value       = data.cloudflare_worker.this.subdomain.url
 }
